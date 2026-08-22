@@ -1,0 +1,33 @@
+## Build & Output Directories
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[LLEe]og[sS]/
+[Tt]emp/
+
+## User-specific & IDE Files
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+.idea/
+*.suo
+*.userprefs
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/
+project.assets.json
+project.nuget.cache
+
+## Publishing & Deployment
+*.deploymanifest
+*.publishsettings
+publish/
+
+## Environment & Local Settings
+appsettings.Development.json
+appsettings.Local.json
+*.env
+*.local
