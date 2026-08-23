@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Application.Abstractions.Persistence;
+using SchoolManagement.Application.Features.Students.CreateStudent;
 using SchoolManagement.Infrastructure.Persistence;
+using SchoolManagement.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,13 @@ builder.Services.AddDbContext<SchoolManagementDbContext>(options =>
     options.UseNpgsql(connectionString)
 );
 
+/*
+    Whenever something requests IStudentRepository, provide StudentRepository.
+*/
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+
+builder.Services.AddScoped<CreateStudentHandler>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,40 +35,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing",
-    "Bracing",
-    "Chilly",
-    "Cool",
-    "Mild",
-    "Warm",
-    "Balmy",
-    "Hot",
-    "Sweltering",
-    "Scorching",
-};
+app.MapPost(
+    "/api/students",
+    async (
+        CreateStudentRequest request,
+        CreateStudentHandler handler,
+        CancellationToken cancellationToken
+    ) =>
+    {
+        var studentId = await handler.HandleAsync(request, cancellationToken);
 
-app.MapGet(
-        "/weatherforecast",
-        () =>
-        {
-            var forecast = Enumerable
-                .Range(1, 5)
-                .Select(index => new WeatherForecast(
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-                .ToArray();
-            return forecast;
-        }
-    )
-    .WithName("GetWeatherForecast");
+        return Results.Created($"/api/students/{studentId}", new { id = studentId });
+    }
+);
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

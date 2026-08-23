@@ -1,5 +1,12 @@
 # School Management
 
+## Dependencies
+
+### Infrastructure
+
+- Microsoft.EntityFrameworkCore.Design: This is the ORM for interacting with the DB
+- Npgsql.EntityFrameworkCore.PostgreSQL:
+
 ## Migrations
 
 ### Start Migration
