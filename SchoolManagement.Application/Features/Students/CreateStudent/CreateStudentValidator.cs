@@ -6,11 +6,7 @@ namespace SchoolManagement.Application.Features.Students.CreateStudent
     {
         public CreateStudentValidator()
         {
-            RuleFor(x => x.FirstName)
-                .NotEmpty()
-                .WithMessage("aaa")
-                .MaximumLength(100)
-                .WithMessage("kjsnknksk");
+            RuleFor(x => x.FirstName).NotEmpty().MaximumLength(100);
 
             RuleFor(x => x.LastName).NotEmpty().MaximumLength(100);
 

@@ -32,18 +32,25 @@ namespace SchoolManagement.Infrastructure.Repositories
             );
         }
 
-        public async Task<IReadOnlyList<Student>> GetAllAsync(
+        public async Task<(IReadOnlyList<Student> Items, int TotalCount)> GetPagedAsync(
+            int page,
+            int pageSize,
             CancellationToken cancellationToken = default
         )
         {
-            /*
-                This is an important EF Core concept.
-                For a GET request, we're only reading the students. We aren't going to modify them.
-                Normally EF Core tracks entities it retrieves
-                
-                AsNoTracking means get all students from the database without tracking them.
-            */
-            return await _dbContext.Students.AsNoTracking().ToListAsync(cancellationToken);
+            var query = _dbContext
+                .Students.AsNoTracking()
+                .OrderBy(student => student.LastName)
+                .ThenBy(student => student.FirstName);
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return (items, totalCount);
         }
     }
 }

@@ -1,5 +1,6 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using SchoolManagement.Api.Extensions;
 using SchoolManagement.Application.Abstractions.Persistence;
 using SchoolManagement.Application.Features.Students.CreateStudent;
 using SchoolManagement.Application.Features.Students.GetStudent;
@@ -51,11 +52,11 @@ app.MapPost(
         CancellationToken cancellationToken
     ) =>
     {
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+        var validationError = await request.ValidateAsync(validator, cancellationToken);
 
-        if (!validationResult.IsValid)
+        if (validationError is not null)
         {
-            return Results.ValidationProblem(validationResult.ToDictionary());
+            return validationError;
         }
 
         var studentId = await handler.HandleAsync(request, cancellationToken);
@@ -83,9 +84,21 @@ app.MapGet(
 
 app.MapGet(
     "/api/students",
-    async (GetStudentsHandler handler, CancellationToken cancellationToken) =>
+    async (
+        [AsParameters] GetStudentsRequest request,
+        GetStudentsHandler handler,
+        IValidator<GetStudentsRequest> validator,
+        CancellationToken cancellationToken
+    ) =>
     {
-        var students = await handler.HandleAsync(cancellationToken);
+        var validationError = await request.ValidateAsync(validator, cancellationToken);
+
+        if (validationError is not null)
+        {
+            return validationError;
+        }
+
+        var students = await handler.HandleAsync(request, cancellationToken);
 
         return Results.Ok(students);
     }

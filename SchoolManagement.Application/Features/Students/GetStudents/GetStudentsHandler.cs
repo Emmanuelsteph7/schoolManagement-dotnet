@@ -1,4 +1,5 @@
 using SchoolManagement.Application.Abstractions.Persistence;
+using SchoolManagement.Application.Common.Pagination;
 using SchoolManagement.Application.Features.Students.GetStudent;
 
 namespace SchoolManagement.Application.Features.Students.GetStudents
@@ -12,13 +13,18 @@ namespace SchoolManagement.Application.Features.Students.GetStudents
             _studentRepository = studentRepository;
         }
 
-        public async Task<IReadOnlyList<StudentResponse>> HandleAsync(
+        public async Task<PagedResult<StudentResponse>> HandleAsync(
+            GetStudentsRequest request,
             CancellationToken cancellationToken = default
         )
         {
-            var students = await _studentRepository.GetAllAsync(cancellationToken);
+            var (students, totalCount) = await _studentRepository.GetPagedAsync(
+                request.Page,
+                request.PageSize,
+                cancellationToken
+            );
 
-            return students
+            var items = students
                 .Select(student => new StudentResponse(
                     student.Id,
                     student.FirstName,
@@ -27,6 +33,13 @@ namespace SchoolManagement.Application.Features.Students.GetStudents
                     student.DateOfBirth
                 ))
                 .ToList();
+
+            return new PagedResult<StudentResponse>(
+                items,
+                request.Page,
+                request.PageSize,
+                totalCount
+            );
         }
     }
 }

@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 ###
 
-GET {{SchoolManagement.Api_HostAddress}}/api/students
+GET {{SchoolManagement.Api_HostAddress}}/api/students?page=0&pageSize=-2
 Content-Type: application/json
 ###
 
