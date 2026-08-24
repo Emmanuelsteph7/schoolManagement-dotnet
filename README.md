@@ -2,10 +2,15 @@
 
 ## Dependencies
 
+### Application
+
+- FluentValidation: For validation
+- FluentValidation.DependencyInjectionExtensions
+
 ### Infrastructure
 
 - Microsoft.EntityFrameworkCore.Design: This is the ORM for interacting with the DB
-- Npgsql.EntityFrameworkCore.PostgreSQL:
+- Npgsql.EntityFrameworkCore.PostgreSQL
 
 ## Migrations
 

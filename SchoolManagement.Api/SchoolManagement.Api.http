@@ -4,9 +4,17 @@ POST {{SchoolManagement.Api_HostAddress}}/api/students
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "john@example.com",
-  "dateOfBirth": "2012-05-10"
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane@example.com",
+    "dateOfBirth": "2012-05-10"
 }
+###
+
+GET {{SchoolManagement.Api_HostAddress}}/api/students
+Content-Type: application/json
+###
+
+GET {{SchoolManagement.Api_HostAddress}}/api/students/1dfee303-0825-409e-89e3-03b41663fd0e
+Content-Type: application/json
 ###
