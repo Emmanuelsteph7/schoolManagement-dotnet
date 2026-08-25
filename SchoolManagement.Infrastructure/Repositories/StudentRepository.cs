@@ -52,5 +52,15 @@ namespace SchoolManagement.Infrastructure.Repositories
 
             return (items, totalCount);
         }
+
+        public async Task UpdateAsync(
+            Student student,
+            CancellationToken cancellationToken = default
+        )
+        {
+            _dbContext.Students.Update(student);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
     }
 }

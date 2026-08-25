@@ -93,5 +93,28 @@ namespace SchoolManagement.Domain.Entities
 
             _enrollments.Add(enrollment);
         }
+
+        public void Update(string firstName, string lastName, string email, DateOnly dateOfBirth)
+        {
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                throw new ArgumentException("First name is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                throw new ArgumentException("Last name is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email is required.");
+            }
+
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            DateOfBirth = dateOfBirth;
+        }
     }
 }

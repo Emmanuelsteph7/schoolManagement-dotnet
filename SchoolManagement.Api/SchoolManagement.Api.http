@@ -11,10 +11,20 @@ Content-Type: application/json
 }
 ###
 
-GET {{SchoolManagement.Api_HostAddress}}/api/students?page=0&pageSize=-2
+GET {{SchoolManagement.Api_HostAddress}}/api/students?page=1&pageSize=10
 Content-Type: application/json
 ###
 
 GET {{SchoolManagement.Api_HostAddress}}/api/students/1dfee303-0825-409e-89e3-03b41663fd0e
 Content-Type: application/json
 ###
+
+PUT {{SchoolManagement.Api_HostAddress}}/api/students/1dfee303-0825-409e-89e3-03b41663fd0e
+Content-Type: application/json
+
+{
+    "firstName": "John",
+    "lastName": "Smith2",
+    "email": "johnsmith@example.com",
+    "dateOfBirth": "2012-05-10"
+}

@@ -11,5 +11,6 @@ namespace SchoolManagement.Application.Abstractions.Persistence
             int pageSize,
             CancellationToken cancellationToken = default
         );
+        Task UpdateAsync(Student student, CancellationToken cancellationToken = default);
     }
 }
