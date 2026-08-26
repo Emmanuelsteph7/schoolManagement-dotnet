@@ -2,6 +2,7 @@ using FluentValidation;
 using SchoolManagement.Api.Extensions;
 using SchoolManagement.Application.Common.Pagination;
 using SchoolManagement.Application.Features.Students.CreateStudent;
+using SchoolManagement.Application.Features.Students.DeleteStudent;
 using SchoolManagement.Application.Features.Students.GetStudent;
 using SchoolManagement.Application.Features.Students.GetStudents;
 using SchoolManagement.Application.Features.Students.UpdateStudent;
@@ -37,7 +38,6 @@ public static class StudentEndpoints
             .WithDescription("Retrieves a student by their unique identifier.")
             .Produces<StudentResponse>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);
-        ;
 
         students
             .MapPut("/{id:guid}", UpdateStudent)
@@ -47,7 +47,14 @@ public static class StudentEndpoints
             .Produces(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .ProducesValidationProblem();
-        ;
+
+        students
+            .MapDelete("/{id:guid}", DeleteStudent)
+            .WithName("DeleteStudent")
+            .WithSummary("Delete a student")
+            .WithDescription("Deletes an existing student by their unique identifier.")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound);
 
         return endpoints;
     }
@@ -128,6 +135,23 @@ public static class StudentEndpoints
         var updated = await handler.HandleAsync(requestWithId, cancellationToken);
 
         if (!updated)
+        {
+            return Results.NotFound();
+        }
+
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> DeleteStudent(
+        Guid id,
+        DeleteStudentHandler handler,
+        IValidator<UpdateStudentRequest> validator,
+        CancellationToken cancellationToken
+    )
+    {
+        var deleted = await handler.HandleAsync(id, cancellationToken);
+
+        if (!deleted)
         {
             return Results.NotFound();
         }

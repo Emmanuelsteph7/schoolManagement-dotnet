@@ -62,5 +62,24 @@ namespace SchoolManagement.Infrastructure.Repositories
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            var student = await _dbContext.Students.FirstOrDefaultAsync(
+                student => student.Id == id,
+                cancellationToken
+            );
+
+            if (student is null)
+            {
+                return false;
+            }
+
+            _dbContext.Students.Remove(student);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return true;
+        }
     }
 }

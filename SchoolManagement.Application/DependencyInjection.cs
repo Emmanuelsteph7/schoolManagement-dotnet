@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SchoolManagement.Application.Features.Students.CreateStudent;
+using SchoolManagement.Application.Features.Students.DeleteStudent;
 using SchoolManagement.Application.Features.Students.GetStudent;
 using SchoolManagement.Application.Features.Students.GetStudents;
 using SchoolManagement.Application.Features.Students.UpdateStudent;
@@ -15,6 +16,7 @@ namespace SchoolManagement.Application
             services.AddScoped<GetStudentHandler>();
             services.AddScoped<GetStudentsHandler>();
             services.AddScoped<UpdateStudentHandler>();
+            services.AddScoped<DeleteStudentHandler>();
 
             services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
 
