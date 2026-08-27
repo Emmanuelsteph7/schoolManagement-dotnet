@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Api.Extensions;
 using SchoolManagement.Application.Common.Pagination;
 using SchoolManagement.Application.Features.Students.CreateStudent;
@@ -20,7 +21,7 @@ public static class StudentEndpoints
             .WithName("CreateStudent")
             .WithSummary("Create a student")
             .WithDescription("Creates a new student.")
-            .Produces(StatusCodes.Status201Created)
+            .Produces<CreateStudentResponse>(StatusCodes.Status201Created)
             .ProducesValidationProblem();
 
         students
@@ -52,9 +53,16 @@ public static class StudentEndpoints
             .MapDelete("/{id:guid}", DeleteStudent)
             .WithName("DeleteStudent")
             .WithSummary("Delete a student")
-            .WithDescription("Deletes an existing student by their unique identifier.")
+            .WithDescription(
+                "Deletes an existing student record from the system using their unique identifier."
+            )
             .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound);
+            .Produces<ProblemDetails>(
+                StatusCodes.Status404NotFound,
+                contentType: "application/json"
+            )
+            .ProducesProblem(StatusCodes.Status500InternalServerError);
+        ;
 
         return endpoints;
     }
@@ -75,7 +83,7 @@ public static class StudentEndpoints
 
         var studentId = await handler.HandleAsync(request, cancellationToken);
 
-        return Results.Created($"/api/students/{studentId}", new { id = studentId });
+        return Results.Created($"/api/students/{studentId}", new CreateStudentResponse(studentId));
     }
 
     private static async Task<IResult> GetStudents(
@@ -145,7 +153,6 @@ public static class StudentEndpoints
     private static async Task<IResult> DeleteStudent(
         Guid id,
         DeleteStudentHandler handler,
-        IValidator<UpdateStudentRequest> validator,
         CancellationToken cancellationToken
     )
     {
@@ -153,7 +160,14 @@ public static class StudentEndpoints
 
         if (!deleted)
         {
-            return Results.NotFound();
+            return Results.NotFound(
+                new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Title = "Student Not Found",
+                    Detail = $"Student with ID '{id}' does not exist.",
+                }
+            );
         }
 
         return Results.NoContent();
