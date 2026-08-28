@@ -21,17 +21,17 @@ namespace SchoolManagement.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                throw new ArgumentException("First name is required.");
+                throw new ArgumentException("First name is required.", nameof(firstName));
             }
 
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                throw new ArgumentException("Last name is required.");
+                throw new ArgumentException("Last name is required.", nameof(lastName));
             }
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new ArgumentException("Email is required.");
+                throw new ArgumentException("Email is required.", nameof(email));
             }
 
             Id = Guid.NewGuid();
@@ -45,17 +45,17 @@ namespace SchoolManagement.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                throw new ArgumentException("First name is required.");
+                throw new ArgumentException("First name is required.", nameof(firstName));
             }
 
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                throw new ArgumentException("Last name is required.");
+                throw new ArgumentException("Last name is required.", nameof(lastName));
             }
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new ArgumentException("Email is required.");
+                throw new ArgumentException("Email is required.", nameof(email));
             }
 
             FirstName = firstName;
@@ -67,12 +67,15 @@ namespace SchoolManagement.Domain.Entities
         {
             if (schoolClassId == Guid.Empty)
             {
-                throw new ArgumentException("School class ID is required.");
+                throw new ArgumentException("School class ID is required.", nameof(schoolClassId));
             }
 
             if (academicSessionId == Guid.Empty)
             {
-                throw new ArgumentException("Academic session ID is required.");
+                throw new ArgumentException(
+                    "Academic session ID is required.",
+                    nameof(academicSessionId)
+                );
             }
 
             /*
@@ -98,17 +101,17 @@ namespace SchoolManagement.Domain.Entities
         {
             if (string.IsNullOrWhiteSpace(firstName))
             {
-                throw new ArgumentException("First name is required.");
+                throw new ArgumentException("First name is required.", nameof(firstName));
             }
 
             if (string.IsNullOrWhiteSpace(lastName))
             {
-                throw new ArgumentException("Last name is required.");
+                throw new ArgumentException("Last name is required.", nameof(lastName));
             }
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                throw new ArgumentException("Email is required.");
+                throw new ArgumentException("Email is required.", nameof(email));
             }
 
             FirstName = firstName;
