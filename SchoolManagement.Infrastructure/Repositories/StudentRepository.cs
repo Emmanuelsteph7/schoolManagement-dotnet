@@ -17,7 +17,6 @@ namespace SchoolManagement.Infrastructure.Repositories
         public async Task AddAsync(Student student, CancellationToken cancellationToken = default)
         {
             await _dbContext.Students.AddAsync(student, cancellationToken);
-
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -26,10 +25,9 @@ namespace SchoolManagement.Infrastructure.Repositories
             CancellationToken cancellationToken = default
         )
         {
-            return await _dbContext.Students.FirstOrDefaultAsync(
-                student => student.Id == id,
-                cancellationToken
-            );
+            return await _dbContext
+                .Students.AsNoTracking()
+                .FirstOrDefaultAsync(student => student.Id == id, cancellationToken);
         }
 
         public async Task<(IReadOnlyList<Student> Items, int TotalCount)> GetPagedAsync(

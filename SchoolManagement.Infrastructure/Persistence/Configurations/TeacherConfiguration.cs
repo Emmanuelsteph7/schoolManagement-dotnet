@@ -16,6 +16,12 @@ namespace SchoolManagement.Infrastructure.Persistence.Configurations
 
             builder.Property(teacher => teacher.Email).HasMaxLength(255).IsRequired();
 
+            builder.Property(teacher => teacher.DateOfBirth).IsRequired();
+
+            builder.Property(teacher => teacher.DateOfEmployment).IsRequired();
+
+            builder.Property(teacher => teacher.Status).HasConversion<int>().IsRequired();
+
             /*
                 Two teachers cannot have the same email address.
             */

@@ -24,9 +24,10 @@ namespace SchoolManagement.Infrastructure
             );
 
             /*
-                Whenever something requests IStudentRepository, provide StudentRepository.
+                Whenever these interfaces are used, call up it's repository
             */
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
 
             return services;
         }
