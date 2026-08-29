@@ -2,8 +2,9 @@ namespace SchoolManagement.Domain.Enums
 {
     public enum EmploymentStatus
     {
+        Pending = 0,
         Active = 1,
-        Inactive = 2,
+        InActive = 2,
         OnLeave = 3,
     }
 }

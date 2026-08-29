@@ -20,7 +20,18 @@ namespace SchoolManagement.Infrastructure.Persistence.Configurations
 
             builder.Property(teacher => teacher.DateOfEmployment).IsRequired();
 
-            builder.Property(teacher => teacher.Status).HasConversion<int>().IsRequired();
+            builder.Property(teacher => teacher.EmploymentStatus).HasConversion<int>().IsRequired();
+
+            builder
+                .Property(teacher => teacher.EmailAccountStatus)
+                .HasConversion<int>()
+                .IsRequired();
+
+            builder.Property(teacher => teacher.EmailAccountVerifiedDate);
+
+            builder.Property(teacher => teacher.CreatedAt).IsRequired();
+
+            builder.Property(teacher => teacher.UpdatedAt);
 
             /*
                 Two teachers cannot have the same email address.

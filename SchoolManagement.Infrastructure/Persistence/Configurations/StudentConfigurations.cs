@@ -33,6 +33,10 @@ namespace SchoolManagement.Infrastructure.Persistence.Configurations
             */
             builder.Property(student => student.Email).HasMaxLength(255).IsRequired();
 
+            builder.Property(student => student.CreatedAt).IsRequired();
+
+            builder.Property(student => student.UpdatedAt);
+
             /*
                 Marked as a required column (NOT NULL).
             */

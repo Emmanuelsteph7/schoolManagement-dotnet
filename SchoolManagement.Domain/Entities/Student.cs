@@ -1,10 +1,11 @@
+using SchoolManagement.Domain.Common;
+
 namespace SchoolManagement.Domain.Entities
 {
-    public class Student
+    public class Student : BaseEntity
     {
         private readonly List<Enrollment> _enrollments = [];
 
-        public Guid Id { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public string Email { get; private set; }
@@ -34,14 +35,18 @@ namespace SchoolManagement.Domain.Entities
                 throw new ArgumentException("Email is required.", nameof(email));
             }
 
-            Id = Guid.NewGuid();
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
+            FirstName = firstName.Trim();
+            LastName = lastName.Trim();
+            Email = email.Trim().ToLowerInvariant();
             DateOfBirth = dateOfBirth;
         }
 
-        public void UpdateDetails(string firstName, string lastName, string email)
+        public void UpdateDetails(
+            string firstName,
+            string lastName,
+            string email,
+            DateOnly dateOfBirth
+        )
         {
             if (string.IsNullOrWhiteSpace(firstName))
             {
@@ -58,9 +63,11 @@ namespace SchoolManagement.Domain.Entities
                 throw new ArgumentException("Email is required.", nameof(email));
             }
 
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
+            FirstName = firstName.Trim();
+            LastName = lastName.Trim();
+            Email = email.Trim().ToLowerInvariant();
+            DateOfBirth = dateOfBirth;
+            UpdatedAt = DateTimeOffset.UtcNow;
         }
 
         public void Enroll(Guid schoolClassId, Guid academicSessionId)
@@ -95,29 +102,8 @@ namespace SchoolManagement.Domain.Entities
             var enrollment = new Enrollment(Id, schoolClassId, academicSessionId);
 
             _enrollments.Add(enrollment);
-        }
 
-        public void Update(string firstName, string lastName, string email, DateOnly dateOfBirth)
-        {
-            if (string.IsNullOrWhiteSpace(firstName))
-            {
-                throw new ArgumentException("First name is required.", nameof(firstName));
-            }
-
-            if (string.IsNullOrWhiteSpace(lastName))
-            {
-                throw new ArgumentException("Last name is required.", nameof(lastName));
-            }
-
-            if (string.IsNullOrWhiteSpace(email))
-            {
-                throw new ArgumentException("Email is required.", nameof(email));
-            }
-
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            DateOfBirth = dateOfBirth;
+            UpdatedAt = DateTimeOffset.UtcNow;
         }
     }
 }

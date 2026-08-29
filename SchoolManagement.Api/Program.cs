@@ -19,5 +19,6 @@ app.UseApiDocumentation();
 app.UseHttpsRedirection();
 
 app.MapStudentEndpoints();
+app.MapTeacherEndpoints();
 
 app.Run();

@@ -5,6 +5,7 @@ using SchoolManagement.Application.Features.Students.DeleteStudent;
 using SchoolManagement.Application.Features.Students.GetStudent;
 using SchoolManagement.Application.Features.Students.GetStudents;
 using SchoolManagement.Application.Features.Students.UpdateStudent;
+using SchoolManagement.Application.Features.Teachers.CreateTeacher;
 
 namespace SchoolManagement.Application
 {
@@ -12,13 +13,18 @@ namespace SchoolManagement.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            /* Students */
             services.AddScoped<CreateStudentHandler>();
             services.AddScoped<GetStudentHandler>();
             services.AddScoped<GetStudentsHandler>();
             services.AddScoped<UpdateStudentHandler>();
             services.AddScoped<DeleteStudentHandler>();
 
+            /* Teachers */
+            services.AddScoped<CreateTeacherHandler>();
+
             services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
+            services.AddValidatorsFromAssemblyContaining<CreateTeacherValidator>();
 
             return services;
         }

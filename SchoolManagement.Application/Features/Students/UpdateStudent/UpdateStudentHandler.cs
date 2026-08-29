@@ -23,7 +23,12 @@ namespace SchoolManagement.Application.Features.Students.UpdateStudent
                 return false;
             }
 
-            student.Update(request.FirstName, request.LastName, request.Email, request.DateOfBirth);
+            student.UpdateDetails(
+                request.FirstName,
+                request.LastName,
+                request.Email,
+                request.DateOfBirth
+            );
 
             await _studentRepository.UpdateAsync(student, cancellationToken);
 
