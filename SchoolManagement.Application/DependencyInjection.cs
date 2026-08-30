@@ -7,6 +7,7 @@ using SchoolManagement.Application.Features.Students.GetStudents;
 using SchoolManagement.Application.Features.Students.UpdateStudent;
 using SchoolManagement.Application.Features.Teachers.CreateTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeacher;
+using SchoolManagement.Application.Features.Teachers.GetTeachers;
 
 namespace SchoolManagement.Application
 {
@@ -24,6 +25,7 @@ namespace SchoolManagement.Application
             /* Teachers */
             services.AddScoped<CreateTeacherHandler>();
             services.AddScoped<GetTeacherHandler>();
+            services.AddScoped<GetTeachersHandler>();
 
             services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateTeacherValidator>();

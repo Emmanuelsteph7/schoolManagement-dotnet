@@ -38,8 +38,7 @@ namespace SchoolManagement.Infrastructure.Repositories
         {
             var query = _dbContext
                 .Teachers.AsNoTracking()
-                .OrderBy(teacher => teacher.LastName)
-                .ThenBy(teacher => teacher.FirstName);
+                .OrderByDescending(teacher => teacher.CreatedAt);
 
             var totalCount = await query.CountAsync(cancellationToken);
 

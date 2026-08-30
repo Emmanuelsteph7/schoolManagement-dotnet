@@ -1,7 +1,9 @@
 using FluentValidation;
 using SchoolManagement.Api.Extensions;
+using SchoolManagement.Application.Common.Pagination;
 using SchoolManagement.Application.Features.Teachers.CreateTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeacher;
+using SchoolManagement.Application.Features.Teachers.GetTeachers;
 
 namespace SchoolManagement.Api.Endpoints
 {
@@ -28,6 +30,14 @@ namespace SchoolManagement.Api.Endpoints
                 .WithDescription("Retrieves a teacher by their unique identifier.")
                 .Produces<TeacherResponse>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound);
+
+            teachers
+                .MapGet("/", GetTeachers)
+                .WithName("GetTeachers")
+                .WithSummary("Get teachers")
+                .WithDescription("Returns a paginated list of teachers.")
+                .Produces<PagedResult<TeacherResponse>>(StatusCodes.Status200OK)
+                .ProducesValidationProblem();
 
             return endpoints;
         }
@@ -70,6 +80,25 @@ namespace SchoolManagement.Api.Endpoints
             }
 
             return Results.Ok(teacher);
+        }
+
+        private static async Task<IResult> GetTeachers(
+            [AsParameters] GetTeachersRequest request,
+            GetTeachersHandler handler,
+            IValidator<GetTeachersRequest> validator,
+            CancellationToken cancellationToken
+        )
+        {
+            var validationError = await request.ValidateAsync(validator, cancellationToken);
+
+            if (validationError is not null)
+            {
+                return validationError;
+            }
+
+            var teachers = await handler.HandleAsync(request, cancellationToken);
+
+            return Results.Ok(teachers);
         }
     };
 }

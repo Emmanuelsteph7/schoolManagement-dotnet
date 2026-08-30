@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace SchoolManagement.Application.Features.Students.GetStudents
+namespace SchoolManagement.Application.Features.Teachers.GetTeachers
 {
-    public class GetStudentsValidator : AbstractValidator<GetStudentsRequest>
+    public class GetTeachersValidator : AbstractValidator<GetTeachersRequest>
     {
-        public GetStudentsValidator()
+        public GetTeachersValidator()
         {
             RuleFor(x => x.Page).GreaterThanOrEqualTo(1).WithMessage("Page must be at least 1.");
 
