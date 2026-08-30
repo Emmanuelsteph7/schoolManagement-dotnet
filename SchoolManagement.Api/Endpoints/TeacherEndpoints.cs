@@ -1,6 +1,7 @@
 using FluentValidation;
 using SchoolManagement.Api.Extensions;
 using SchoolManagement.Application.Features.Teachers.CreateTeacher;
+using SchoolManagement.Application.Features.Teachers.GetTeacher;
 
 namespace SchoolManagement.Api.Endpoints
 {
@@ -19,6 +20,14 @@ namespace SchoolManagement.Api.Endpoints
                 .WithDescription("Creates a new teacher.")
                 .Produces<CreateTeacherResponse>(StatusCodes.Status201Created)
                 .ProducesValidationProblem();
+
+            teachers
+                .MapGet("/{id:guid}", GetTeacher)
+                .WithName("GetTeacher")
+                .WithSummary("Get a teacher")
+                .WithDescription("Retrieves a teacher by their unique identifier.")
+                .Produces<TeacherResponse>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status404NotFound);
 
             return endpoints;
         }
@@ -43,6 +52,24 @@ namespace SchoolManagement.Api.Endpoints
                 $"/api/teachers/{teacherId}",
                 new CreateTeacherResponse(teacherId)
             );
+        }
+
+        private static async Task<IResult> GetTeacher(
+            Guid id,
+            GetTeacherHandler handler,
+            CancellationToken cancellationToken
+        )
+        {
+            var request = new GetTeacherRequest(id);
+
+            var teacher = await handler.HandleAsync(request, cancellationToken);
+
+            if (teacher is null)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.Ok(teacher);
         }
     };
 }
