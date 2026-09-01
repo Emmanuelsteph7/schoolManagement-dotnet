@@ -25,6 +25,7 @@ namespace SchoolManagement.Application.Features.Teachers.GetTeachers
                 request.SortDirection,
                 request.Search,
                 request.EmploymentStatus,
+                request.EmailAccountStatus,
                 cancellationToken
             );
 

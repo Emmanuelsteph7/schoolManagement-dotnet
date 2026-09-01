@@ -14,7 +14,9 @@ namespace SchoolManagement.Application.Abstractions.Persistence
             SortDirection SortDirection = SortDirection.Desc,
             string? search = null,
             EmploymentStatus? employmentStatus = null,
+            EmailAccountStatus? emailAccountStatus = null,
             CancellationToken cancellationToken = default
         );
+        Task UpdateAsync(Teacher teacher, CancellationToken cancellationToken = default);
     }
 }

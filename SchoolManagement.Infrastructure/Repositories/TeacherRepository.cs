@@ -38,6 +38,7 @@ namespace SchoolManagement.Infrastructure.Repositories
             SortDirection sortDirection,
             string? search,
             EmploymentStatus? employmentStatus,
+            EmailAccountStatus? emailAccountStatus,
             CancellationToken cancellationToken = default
         )
         {
@@ -55,6 +56,13 @@ namespace SchoolManagement.Infrastructure.Repositories
             if (employmentStatus.HasValue)
             {
                 query = query.Where(teacher => teacher.EmploymentStatus == employmentStatus.Value);
+            }
+
+            if (emailAccountStatus.HasValue)
+            {
+                query = query.Where(teacher =>
+                    teacher.EmailAccountStatus == emailAccountStatus.Value
+                );
             }
 
             var totalCount = await query.CountAsync(cancellationToken);
@@ -86,6 +94,16 @@ namespace SchoolManagement.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
 
             return (items, totalCount);
+        }
+
+        public async Task UpdateAsync(
+            Teacher teacher,
+            CancellationToken cancellationToken = default
+        )
+        {
+            _dbContext.Teachers.Update(teacher);
+
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

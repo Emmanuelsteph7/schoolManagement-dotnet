@@ -131,16 +131,14 @@ public static class StudentEndpoints
         CancellationToken cancellationToken
     )
     {
-        var requestWithId = request with { Id = id };
-
-        var validationError = await requestWithId.ValidateAsync(validator, cancellationToken);
+        var validationError = await request.ValidateAsync(validator, cancellationToken);
 
         if (validationError is not null)
         {
             return validationError;
         }
 
-        var updated = await handler.HandleAsync(requestWithId, cancellationToken);
+        var updated = await handler.HandleAsync(id, request, cancellationToken);
 
         if (!updated)
         {

@@ -4,6 +4,7 @@ using SchoolManagement.Application.Common.Pagination;
 using SchoolManagement.Application.Features.Teachers.CreateTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeachers;
+using SchoolManagement.Application.Features.Teachers.UpdateTeacher;
 
 namespace SchoolManagement.Api.Endpoints
 {
@@ -37,6 +38,15 @@ namespace SchoolManagement.Api.Endpoints
                 .WithSummary("Get teachers")
                 .WithDescription("Returns a paginated list of teachers.")
                 .Produces<PagedResult<TeacherResponse>>(StatusCodes.Status200OK)
+                .ProducesValidationProblem();
+
+            teachers
+                .MapPut("/{id:guid}", UpdateTeacher)
+                .WithName("UpdateTeacher")
+                .WithSummary("Update a teacher")
+                .WithDescription("Updates a teacher's personal details.")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound)
                 .ProducesValidationProblem();
 
             return endpoints;
@@ -99,6 +109,31 @@ namespace SchoolManagement.Api.Endpoints
             var teachers = await handler.HandleAsync(request, cancellationToken);
 
             return Results.Ok(teachers);
+        }
+
+        private static async Task<IResult> UpdateTeacher(
+            Guid id,
+            UpdateTeacherRequest request,
+            UpdateTeacherHandler handler,
+            IValidator<UpdateTeacherRequest> validator,
+            CancellationToken cancellationToken
+        )
+        {
+            var validationError = await request.ValidateAsync(validator, cancellationToken);
+
+            if (validationError is not null)
+            {
+                return validationError;
+            }
+
+            var updated = await handler.HandleAsync(id, request, cancellationToken);
+
+            if (!updated)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.NoContent();
         }
     };
 }

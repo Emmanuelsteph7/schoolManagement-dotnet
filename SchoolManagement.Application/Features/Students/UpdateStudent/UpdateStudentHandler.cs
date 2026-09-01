@@ -12,11 +12,12 @@ namespace SchoolManagement.Application.Features.Students.UpdateStudent
         }
 
         public async Task<bool> HandleAsync(
+            Guid id,
             UpdateStudentRequest request,
             CancellationToken cancellationToken = default
         )
         {
-            var student = await _studentRepository.GetByIdAsync(request.Id, cancellationToken);
+            var student = await _studentRepository.GetByIdAsync(id, cancellationToken);
 
             if (student is null)
             {

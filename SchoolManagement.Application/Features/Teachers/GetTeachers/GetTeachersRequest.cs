@@ -8,6 +8,7 @@ namespace SchoolManagement.Application.Features.Teachers.GetTeachers
         TeacherSortField SortBy = TeacherSortField.CreatedAt,
         SortDirection SortDirection = SortDirection.Desc,
         string? Search = null,
-        EmploymentStatus? EmploymentStatus = null
+        EmploymentStatus? EmploymentStatus = null,
+        EmailAccountStatus? EmailAccountStatus = null
     );
 }
