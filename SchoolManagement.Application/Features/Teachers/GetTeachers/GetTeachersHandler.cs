@@ -21,6 +21,10 @@ namespace SchoolManagement.Application.Features.Teachers.GetTeachers
             var (teachers, totalCount) = await _teacherRepository.GetPagedAsync(
                 request.Page,
                 request.PageSize,
+                request.SortBy,
+                request.SortDirection,
+                request.Search,
+                request.EmploymentStatus,
                 cancellationToken
             );
 

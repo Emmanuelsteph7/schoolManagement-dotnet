@@ -1,4 +1,5 @@
 using SchoolManagement.Domain.Entities;
+using SchoolManagement.Domain.Enums;
 
 namespace SchoolManagement.Application.Abstractions.Persistence
 {
@@ -9,6 +10,10 @@ namespace SchoolManagement.Application.Abstractions.Persistence
         Task<(IReadOnlyList<Teacher> Items, int TotalCount)> GetPagedAsync(
             int page,
             int pageSize,
+            TeacherSortField SortBy = TeacherSortField.CreatedAt,
+            SortDirection SortDirection = SortDirection.Desc,
+            string? search = null,
+            EmploymentStatus? employmentStatus = null,
             CancellationToken cancellationToken = default
         );
     }
