@@ -5,6 +5,7 @@ using SchoolManagement.Application.Features.Teachers.CreateTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeachers;
 using SchoolManagement.Application.Features.Teachers.UpdateTeacher;
+using SchoolManagement.Application.Features.Teachers.UpdateTeacherStatus;
 
 namespace SchoolManagement.Api.Endpoints
 {
@@ -48,6 +49,38 @@ namespace SchoolManagement.Api.Endpoints
                 .Produces(StatusCodes.Status204NoContent)
                 .Produces(StatusCodes.Status404NotFound)
                 .ProducesValidationProblem();
+
+            teachers
+                .MapPost("/{id:guid}/verify-email", VerifyTeacherEmail)
+                .WithName("VerifyTeacherEmail")
+                .WithSummary("Verify a teacher's email")
+                .WithDescription("Verifies the teacher's email address.")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound);
+
+            teachers
+                .MapPost("/{id:guid}/activate", ActivateTeacher)
+                .WithName("ActivateTeacher")
+                .WithSummary("Activate a teacher")
+                .WithDescription("Activates a teacher.")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound);
+
+            teachers
+                .MapPost("/{id:guid}/deactivate", DeactivateTeacher)
+                .WithName("DeactivateTeacher")
+                .WithSummary("Deactivate a teacher")
+                .WithDescription("Deactivates a teacher.")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound);
+
+            teachers
+                .MapPost("/{id:guid}/leave", PutTeacherOnLeave)
+                .WithName("PutTeacherOnLeave")
+                .WithSummary("Put a teacher on leave")
+                .WithDescription("Places a teacher on leave.")
+                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status404NotFound);
 
             return endpoints;
         }
@@ -127,6 +160,70 @@ namespace SchoolManagement.Api.Endpoints
             }
 
             var updated = await handler.HandleAsync(id, request, cancellationToken);
+
+            if (!updated)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> VerifyTeacherEmail(
+            Guid id,
+            UpdateTeacherStatusHandler handler,
+            CancellationToken cancellationToken
+        )
+        {
+            var updated = await handler.VerifyEmailAsync(id, cancellationToken);
+
+            if (!updated)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> ActivateTeacher(
+            Guid id,
+            UpdateTeacherStatusHandler handler,
+            CancellationToken cancellationToken
+        )
+        {
+            var updated = await handler.ActivateAsync(id, cancellationToken);
+
+            if (!updated)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> DeactivateTeacher(
+            Guid id,
+            UpdateTeacherStatusHandler handler,
+            CancellationToken cancellationToken
+        )
+        {
+            var updated = await handler.DeactivateAsync(id, cancellationToken);
+
+            if (!updated)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.NoContent();
+        }
+
+        private static async Task<IResult> PutTeacherOnLeave(
+            Guid id,
+            UpdateTeacherStatusHandler handler,
+            CancellationToken cancellationToken
+        )
+        {
+            var updated = await handler.PutOnLeaveAsync(id, cancellationToken);
 
             if (!updated)
             {

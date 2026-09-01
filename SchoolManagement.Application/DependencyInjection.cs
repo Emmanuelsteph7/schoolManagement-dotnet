@@ -9,6 +9,7 @@ using SchoolManagement.Application.Features.Teachers.CreateTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeacher;
 using SchoolManagement.Application.Features.Teachers.GetTeachers;
 using SchoolManagement.Application.Features.Teachers.UpdateTeacher;
+using SchoolManagement.Application.Features.Teachers.UpdateTeacherStatus;
 
 namespace SchoolManagement.Application
 {
@@ -28,6 +29,7 @@ namespace SchoolManagement.Application
             services.AddScoped<GetTeacherHandler>();
             services.AddScoped<GetTeachersHandler>();
             services.AddScoped<UpdateTeacherHandler>();
+            services.AddScoped<UpdateTeacherStatusHandler>();
 
             services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
             services.AddValidatorsFromAssemblyContaining<CreateTeacherValidator>();
