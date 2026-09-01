@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using SchoolManagement.Api.Endpoints;
+using SchoolManagement.Api.ExceptionHandling;
 using SchoolManagement.Api.Extensions;
 using SchoolManagement.Application;
 using SchoolManagement.Infrastructure;
@@ -22,7 +23,12 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 app.UseApiDocumentation();
 
